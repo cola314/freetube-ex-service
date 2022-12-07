@@ -6,4 +6,8 @@ import lombok.Getter;
 public class CreatePlaylistDto {
 
     private String title;
+
+    public CreatePlaylistDto(String title) {
+        this.title = title;
+    }
 }

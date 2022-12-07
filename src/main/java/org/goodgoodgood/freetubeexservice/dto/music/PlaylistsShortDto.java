@@ -1,7 +1,9 @@
 package org.goodgoodgood.freetubeexservice.dto.music;
 
+import lombok.Getter;
 import org.goodgoodgood.freetubeexservice.domain.music.Playlist;
 
+@Getter
 public class PlaylistsShortDto {
 
     private Long id;

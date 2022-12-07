@@ -47,6 +47,7 @@ public class MusicService {
         return playlist.getId();
     }
 
+    @Transactional
     public Long addMusic(Long playlistId, String email, AddMusicDto dto) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(PlaylistNotFoundException::new);
@@ -69,6 +70,7 @@ public class MusicService {
         return playlistId;
     }
 
+    @Transactional
     public PlaylistDto getPlaylist(String email, Long playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(PlaylistNotFoundException::new);
