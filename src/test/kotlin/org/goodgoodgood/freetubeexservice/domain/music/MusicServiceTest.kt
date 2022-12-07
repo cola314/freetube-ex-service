@@ -1,11 +1,14 @@
 package org.goodgoodgood.freetubeexservice.domain.music;
 
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
+import org.goodgoodgood.freetubeexservice.domain.music.dto.AddMusicDto
+import org.goodgoodgood.freetubeexservice.domain.music.dto.CreatePlaylistDto
+import org.goodgoodgood.freetubeexservice.domain.music.repository.MusicPlaylistRepository
+import org.goodgoodgood.freetubeexservice.domain.music.repository.MusicRepository
+import org.goodgoodgood.freetubeexservice.domain.music.repository.PlaylistRepository
 import org.goodgoodgood.freetubeexservice.domain.user.Role
 import org.goodgoodgood.freetubeexservice.domain.user.User
 import org.goodgoodgood.freetubeexservice.domain.user.UserRepository
-import org.goodgoodgood.freetubeexservice.dto.music.AddMusicDto
-import org.goodgoodgood.freetubeexservice.dto.music.CreatePlaylistDto
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,10 +34,12 @@ class MusicServiceTest @Autowired constructor(
     @Test
     fun getPlaylistsByEmail() {
         // given
-        val savedUser = userRepository.save(User("name", "email", Role.USER))
+        val savedUser = userRepository.save(User.fixture("name", "email", Role.USER))
         playListRepository.saveAll(
             listOf(
-                Playlist(savedUser, "title"),
+                Playlist(
+                    user = savedUser, title = "title"
+                ),
             )
         )
 
@@ -49,7 +54,7 @@ class MusicServiceTest @Autowired constructor(
     @Test
     fun createPlaylist() {
         // given
-        userRepository.save(User("name", "email", Role.USER))
+        userRepository.save(User.fixture("name", "email", Role.USER))
         val request = CreatePlaylistDto("title")
 
         // when
@@ -64,12 +69,12 @@ class MusicServiceTest @Autowired constructor(
     @Test
     fun addMusic() {
         // given
-        val savedUser = userRepository.save(User("name", "email", Role.USER))
-        val savedPlaylist = playListRepository.save(Playlist(savedUser, "playlist"))
+        val savedUser = userRepository.save(User.fixture("name", "email", Role.USER))
+        val savedPlaylist = playListRepository.save(Playlist.fixture(savedUser, "playlist"))
         val request = AddMusicDto("videoId", "music title")
 
         // when
-        musicService.addMusic(savedPlaylist.id, "email", request)
+        musicService.addMusic(savedPlaylist.id!!, "email", request)
 
         // then
         val music = musicRepository.findAll()[0]
@@ -80,13 +85,18 @@ class MusicServiceTest @Autowired constructor(
     @Test
     fun getPlaylist() {
         // given
-        val savedUser = userRepository.save(User("name", "email", Role.USER))
-        val savedPlaylist = playListRepository.save(Playlist(savedUser, "playlist"))
-        val savedMusic = musicRepository.save(Music("videoId", "title"))
-        musicPlaylistRepository.save(MusicPlaylist(savedMusic, savedPlaylist))
-        
+        val savedUser = userRepository.save(User.fixture("name", "email", Role.USER))
+        val savedPlaylist = playListRepository.save(Playlist.fixture(savedUser, "playlist"))
+        val savedMusic = musicRepository.save(Music.fixture("videoId", "title"))
+        musicPlaylistRepository.save(
+            MusicPlaylist(
+                music = savedMusic,
+                playlist = savedPlaylist
+            )
+        )
+
         // when
-        val playlist = musicService.getPlaylist("email", savedPlaylist.id)
+        val playlist = musicService.getPlaylist("email", savedPlaylist.id!!)
 
         // then
         assertThat(playlist.title).isEqualTo("playlist")

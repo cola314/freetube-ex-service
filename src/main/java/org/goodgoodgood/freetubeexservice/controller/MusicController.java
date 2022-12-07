@@ -3,10 +3,10 @@ package org.goodgoodgood.freetubeexservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.goodgoodgood.freetubeexservice.config.auth.SessionUser;
 import org.goodgoodgood.freetubeexservice.domain.music.MusicService;
-import org.goodgoodgood.freetubeexservice.dto.music.AddMusicDto;
-import org.goodgoodgood.freetubeexservice.dto.music.CreatePlaylistDto;
-import org.goodgoodgood.freetubeexservice.dto.music.PlaylistDto;
-import org.goodgoodgood.freetubeexservice.dto.music.PlaylistsShortDto;
+import org.goodgoodgood.freetubeexservice.domain.music.dto.AddMusicDto;
+import org.goodgoodgood.freetubeexservice.domain.music.dto.CreatePlaylistDto;
+import org.goodgoodgood.freetubeexservice.domain.music.dto.PlaylistDto;
+import org.goodgoodgood.freetubeexservice.domain.music.dto.PlaylistsShortDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
