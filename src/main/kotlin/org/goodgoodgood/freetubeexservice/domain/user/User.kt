@@ -22,7 +22,7 @@ class User(
     @Column(nullable = false)
     val role: Role,
 ): BaseTimestampEntity() {
-    fun update(name: String, picture: String): User {
+    fun update(name: String, picture: String?): User {
         this.name = name
         this.picture = picture
         return this
