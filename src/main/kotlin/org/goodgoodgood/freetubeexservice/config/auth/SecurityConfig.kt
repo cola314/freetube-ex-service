@@ -7,9 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
-class SecurityConfig(
-    private val customOAuth2UserService: CustomOAuth2UserService,
-) {
+class SecurityConfig {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
@@ -18,16 +16,13 @@ class SecurityConfig(
             .headers().frameOptions().disable()
             .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/**").hasRole(Role.USER.name)
+                .mvcMatchers("/").permitAll()
+                .mvcMatchers("/api/hello").authenticated()
+                .mvcMatchers("/api/**").hasRole(Role.USER.name)
                 .anyRequest().authenticated()
             .and()
-                .logout()
-                    .logoutSuccessUrl("/")
-            .and()
-                .oauth2Login()
-                    .userInfoEndpoint()
-                        .userService(customOAuth2UserService)
+            .formLogin()
+                .loginProcessingUrl("/api/login")
 
         return http.build()
     }

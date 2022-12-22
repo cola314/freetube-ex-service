@@ -1,11 +1,12 @@
 package org.goodgoodgood.freetubeexservice.controller
 
-import org.goodgoodgood.freetubeexservice.config.auth.SessionUser
 import org.goodgoodgood.freetubeexservice.domain.music.MusicService
 import org.goodgoodgood.freetubeexservice.domain.music.dto.AddMusicDto
 import org.goodgoodgood.freetubeexservice.domain.music.dto.CreatePlaylistDto
 import org.goodgoodgood.freetubeexservice.domain.music.dto.PlaylistDto
 import org.goodgoodgood.freetubeexservice.domain.music.dto.PlaylistsShortDto
+import org.goodgoodgood.freetubeexservice.domain.user.User
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpSession
 
@@ -16,20 +17,25 @@ class MusicController(
 ) {
 
     @GetMapping("api/playlists")
-    fun getPlaylists(): List<PlaylistsShortDto> {
-        val user = httpSession.getAttribute("user") as SessionUser
+    fun getPlaylists(
+        @AuthenticationPrincipal user: User,
+    ): List<PlaylistsShortDto> {
         return musicService.getPlaylistsByEmail(user.email)
     }
 
     @GetMapping("api/playlists/{playlistId}")
-    fun getPlaylistDetail(@PathVariable playlistId: Long): PlaylistDto {
-        val user = httpSession.getAttribute("user") as SessionUser
+    fun getPlaylistDetail(
+        @PathVariable playlistId: Long,
+        @AuthenticationPrincipal user: User,
+    ): PlaylistDto {
         return musicService.getPlaylist(user.email, playlistId)
     }
 
     @PostMapping("api/playlists")
-    fun createPlaylist(@RequestBody dto: CreatePlaylistDto): Long {
-        val user = httpSession.getAttribute("user") as SessionUser
+    fun createPlaylist(
+        @RequestBody dto: CreatePlaylistDto,
+        @AuthenticationPrincipal user: User,
+    ): Long {
         return musicService.createPlaylist(user.email, dto)
     }
 
@@ -37,8 +43,8 @@ class MusicController(
     fun addMusic(
         @PathVariable playlistId: Long,
         @RequestBody dto: AddMusicDto,
+        @AuthenticationPrincipal user: User,
     ): Long {
-        val user = httpSession.getAttribute("user") as SessionUser
         return musicService.addMusic(playlistId, user.email, dto)
     }
 
