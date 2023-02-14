@@ -1,8 +1,6 @@
 ﻿namespace FreeTubeExtensionService.Controllers;
 
 using FreeTubeExtensionService.Utils;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +13,5 @@ public class AuthController : ControllerBase
     public string GetUsername()
     {
         return User.GetUsername();
-    }
-
-    [HttpPost("logout")]
-    public IActionResult Logout()
-    {
-        return new SignOutResult(new[]
-        { 
-            OpenIdConnectDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme 
-        });
     }
 }
