@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = config.KEYCLOAK_URL,
             ValidateAudience = true,
             ValidAudience = "account",
-            ValidateLifetime = true,
+            ValidateLifetime = false, //temporarily disable
             IssuerSigningKeyResolver = (s, token, identifier, param) =>
             {
                 using var client = new HttpClient();
@@ -36,15 +36,6 @@ builder.Services.AddAuthentication(options =>
                 return keySet.Keys;
             }
         };
-    });
-
-var corsPolicy = "_myCorsPolicy";
-builder.Services.AddCors(options =>
-    {
-        options.AddPolicy(corsPolicy, policy =>
-        {
-            policy.AllowAnyOrigin();
-        });
     });
 
 builder.Services.AddControllers();
@@ -61,9 +52,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseCors(corsPolicy);
+// global cors policy
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 
 app.UseAuthentication();
 app.UseAuthorization();

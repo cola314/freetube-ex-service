@@ -37,11 +37,10 @@ public class FavoriteController : ControllerBase
     }
 
     [HttpPost]
-    public long CreateFavorite(FavoriteDto dto)
+    public long CreateFavorite(CreateFavoriteDto dto)
     {
         var favorite = new Favorite
         {
-            Id = dto.Id,
             Title = dto.Title,
             Thumbnail = dto.Thumbnail,
             Owner = dto.Owner,
