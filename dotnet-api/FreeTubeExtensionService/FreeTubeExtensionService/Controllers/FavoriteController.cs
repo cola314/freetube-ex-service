@@ -52,4 +52,21 @@ public class FavoriteController : ControllerBase
 
         return favorite.Id;
     }
+
+    [HttpDelete]
+    public IActionResult DeleteFavorite(long id)
+    {
+        var username = User.GetUsername();
+        var favorite = _db.Favorites.FirstOrDefault(x => x.Id == id && x.Username == username);
+
+        if (favorite != null)
+        {
+            _db.Favorites.Remove(favorite);
+            _db.SaveChanges();
+
+            return NoContent();
+        }
+
+        return NotFound();
+    }
 }
