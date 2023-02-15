@@ -53,7 +53,7 @@ public class FavoriteController : ControllerBase
         return favorite.Id;
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public IActionResult DeleteFavorite(long id)
     {
         var username = User.GetUsername();
