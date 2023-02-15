@@ -2,17 +2,17 @@
 
 public class FavoriteDto
 {
-    public required long Id { get; init; }
-    public required string Title { get; init; }
-    public required string Thumbnail { get; init; }
-    public required string Owner { get; init; }
-    public required  string VideoId { get; init; }
+    public long Id { get; init; }
+    public string Title { get; init; }
+    public string Thumbnail { get; init; }
+    public string Owner { get; init; }
+    public  string VideoId { get; init; }
 }
 
 public class CreateFavoriteDto
 {
-    public required string Title { get; init; }
-    public required string Thumbnail { get; init; }
-    public required string Owner { get; init; }
-    public required string VideoId { get; init; }
+    public string Title { get; init; }
+    public string Thumbnail { get; init; }
+    public string Owner { get; init; }
+    public string VideoId { get; init; }
 }
