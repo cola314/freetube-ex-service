@@ -10,4 +10,6 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Favorite> Favorites { get; set; }
+    public DbSet<Playlist> Playlists { get; set; }
+    public DbSet<PlaylistMusic> PlaylistMusics { get; set; }
 }
